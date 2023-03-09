@@ -38,11 +38,9 @@ class Monitor():
         self.mutex.acquire()
         if direction ==1:
             self.VCN.wait_for(lambda: self.numCsur.value ==0 and self.numP.value ==0)
-            print("HOLA")
             self.numCnorte.value += 1
         else:
             self.VCS.wait_for(lambda: self.numCnorte.value ==0 and self.numP.value ==0)
-            print("caracola")
             self.numCsur.value += 1
         self.mutex.release()
 
@@ -61,7 +59,6 @@ class Monitor():
     def wants_enter_pedestrian(self) -> None:
         self.mutex.acquire()
         self.VP.wait_for(lambda: self.numCsur.value ==0 and self.numCnorte.value ==0)
-        print("ª")
         self.numP.value += 1
         self.mutex.release()
 
@@ -73,7 +70,7 @@ class Monitor():
         self.mutex.release()
 
     def __repr__(self) -> str:
-        return f'Monitor:\n numero coches norte pasando:{self.numCnorte.value}\n numero coches sur pasando {self.numCsur.value} \n numero peatones pasando {self.numP.value}\n -------------------------------------------'
+        return f'Monitor:\n numero coches norte pasando:{self.numCnorte.value}\n numero coches sur pasando {self.numCsur.value} \n numero peatones pasando {self.numP.value}\n -------------------------------------------\n'
 
 def delay_car_north() -> None:
     time.sleep(max(random.normalvariate(1,.25),.1))
@@ -142,6 +139,7 @@ def main():
     gped.start()
     gcars.join()
     gped.join()
+    print("TERMINADO")
 
 
 if __name__ == '__main__':
