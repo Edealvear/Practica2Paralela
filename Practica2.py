@@ -99,10 +99,10 @@ class Monitor():
         return f'Monitor:\n numero coches norte pasando:{self.numCnorte.value}\n numero coches sur pasando {self.numCsur.value} \n numero peatones pasando {self.numP.value}\n -------------------------------------------\n'
 
 def delay_car_north() -> None:
-    time.sleep(max(random.normalvariate(1,.25),.1))
+    time.sleep(max(random.normalvariate(1,.5),.1))
 
 def delay_car_south() -> None:
-    time.sleep(max(random.normalvariate(1,.25),.1))#El maximo es para que no puedan salir valores negativos (me ha pasado)
+    time.sleep(max(random.normalvariate(1,.5),.1))#El maximo es para que no puedan salir valores negativos (me ha pasado)
 
 def delay_pedestrian() -> None:
     time.sleep(random.normalvariate(30, 10))
