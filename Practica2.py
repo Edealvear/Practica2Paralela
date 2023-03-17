@@ -86,7 +86,7 @@ class Monitor():
     def leaves_pedestrian(self) -> None:
         self.mutex.acquire()
         self.numP.value -= 1
-        if self.numP == 0 or (self.waitnorte.value + self.waitsur.value > 15): #si hay mas de 10 coches esperando que se pase el turno a los coches
+        if self.numP.value == 0 or (self.waitnorte.value + self.waitsur.value > 15): #si hay mas de 10 coches esperando que se pase el turno a los coches
             if self.waitnorte.value > self.waitsur.value:
                 self.turn.value = 1
                 self.VCN.notify_all()
