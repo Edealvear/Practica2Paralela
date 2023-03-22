@@ -117,7 +117,7 @@ def delay_car_south() -> None:
     time.sleep(max(random.normalvariate(1,.5),.1))#El maximo es para que no puedan salir valores negativos (me ha pasado)
 
 def delay_pedestrian() -> None:
-    time.sleep(random.normalvariate(10, 2))
+    time.sleep(random.normalvariate(30,10))
 
 def car(cid: int, direction: int, monitor: Monitor)  -> None:
     print(f"car {cid} heading {direction} wants to enter. {monitor}")
