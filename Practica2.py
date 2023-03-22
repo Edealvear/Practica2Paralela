@@ -47,7 +47,7 @@ class Monitor():
             self.waitnorte.value -= 1
         else:
             self.waitsur.value += 1
-            self.VCS.wait_for(lambda: self.numCnorte.value ==0 and self.numP.value ==0 and (self.turn.value == 0 or (self.waitnorte.value == 0  and self.waitP.value ==0) ))
+            self.VCS.wait_for(lambda: self.numCnorte.value == 0 and self.numP.value ==0 and (self.turn.value == 0 or (self.waitnorte.value == 0  and self.waitP.value ==0) ))
             self.numCsur.value += 1
             self.waitsur.value -= 1
         self.mutex.release()
@@ -57,20 +57,28 @@ class Monitor():
         if direction ==1: 
             self.numCnorte.value -= 1
             if self.numCnorte.value == 0 or self.waitP.value > 10 or (self.waitsur.value > 10): #si hay mas de 10 peatones o coches de la otra direccion esperando 
-                if self.waitP.value > self.waitsur.value or self.waitP.value>10:
-                    self.turn.value = 2
+                if self.waitsur.value > 0 and self.waitP.value >0 and self.turn.value == 1:
+                    self.turn.value = 2*random.randint(0,1)#Para que devuelva 0 o 2
+                if self.waitP.value > self.waitsur.value or self.turn.value ==2: #or self.waitP.value>10:
+                    if self.turn.value == 1:
+                        self.turn.value = 2
                     self.VP.notify_all()
                 else:
-                    self.turn.value = 0
+                    if self.turn.value ==1:
+                        self.turn.value = 0
                     self.VCS.notify_all()
         else:
             self.numCsur.value -=1
             if self.numCsur.value ==0 or self.waitP.value >10 or (self.waitnorte.value > 10):
-                if self.waitnorte.value >= self.waitP.value or self.waitP.value > 10:
-                    self.turn.value = 1
+                if self.waitnorte.value > 0 and self.waitP.value > 0 and self.turn.value == 0:
+                    self.turn.value = random.randint(1,2)
+                if self.waitnorte.value >= self.waitP.value or self.turn.value ==1: #or self.waitP.value > 10:
+                    if self.turn.value==0:
+                        self.turn.value = 1
                     self.VCN.notify_all()
                 else:
-                    self.turn.value = 2
+                    if self.turn.value==0:
+                        self.turn.value = 2
                     self.VP.notify_all()
         self.mutex.release()
 
@@ -87,11 +95,15 @@ class Monitor():
         self.mutex.acquire()
         self.numP.value -= 1
         if self.numP.value == 0 or (self.waitnorte.value + self.waitsur.value > 15): #si hay mas de 10 coches esperando que se pase el turno a los coches
-            if self.waitnorte.value > self.waitsur.value:
-                self.turn.value = 1
+            if self.waitnorte.value > 0 and self.waitsur.value >0 and self.turn.value==2:
+                self.turn.value = random.randint(0,1)
+            if self.waitnorte.value > self.waitsur.value or self.turn.value == 1:
+                if self.turn.value ==2:
+                    self.turn.value = 1
                 self.VCN.notify_all()
             else:
-                self.turn.value = 0
+                if self.turn.value ==2:
+                    self.turn.value = 0
                 self.VCS.notify_all()
         self.mutex.release()
 
@@ -105,7 +117,7 @@ def delay_car_south() -> None:
     time.sleep(max(random.normalvariate(1,.5),.1))#El maximo es para que no puedan salir valores negativos (me ha pasado)
 
 def delay_pedestrian() -> None:
-    time.sleep(random.normalvariate(30, 10))
+    time.sleep(random.normalvariate(10, 2))
 
 def car(cid: int, direction: int, monitor: Monitor)  -> None:
     print(f"car {cid} heading {direction} wants to enter. {monitor}")
@@ -170,7 +182,7 @@ def main():
     gped.start()
     gcars.join()
     gped.join()
-    print("TERMINADO")
+    print("------------------------\n\nTERMINADO\n\n------------------------")
 
 
 if __name__ == '__main__':
