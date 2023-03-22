@@ -62,11 +62,13 @@ class Monitor():
                 if self.waitP.value > self.waitsur.value or self.turn.value ==2: #or self.waitP.value>10:
                     if self.turn.value == 1:
                         self.turn.value = 2
-                    self.VP.notify_all()
+                    if self.numCnorte ==0:
+                        self.VP.notify_all()
                 else:
                     if self.turn.value ==1:
                         self.turn.value = 0
-                    self.VCS.notify_all()
+                    if self.numCnorte ==0:    
+                        self.VCS.notify_all()
         else:
             self.numCsur.value -=1
             if self.numCsur.value ==0 or self.waitP.value >10 or (self.waitnorte.value > 10):
@@ -75,11 +77,13 @@ class Monitor():
                 if self.waitnorte.value >= self.waitP.value or self.turn.value ==1: #or self.waitP.value > 10:
                     if self.turn.value==0:
                         self.turn.value = 1
-                    self.VCN.notify_all()
+                    if self.numCsur ==0:
+                        self.VCN.notify_all()
                 else:
                     if self.turn.value==0:
                         self.turn.value = 2
-                    self.VP.notify_all()
+                    if self.numCsur==0:
+                        self.VP.notify_all()
         self.mutex.release()
 
     def wants_enter_pedestrian(self) -> None:
@@ -100,11 +104,13 @@ class Monitor():
             if self.waitnorte.value > self.waitsur.value or self.turn.value == 1:
                 if self.turn.value ==2:
                     self.turn.value = 1
-                self.VCN.notify_all()
+                if self.numP==0:
+                    self.VCN.notify_all()
             else:
                 if self.turn.value ==2:
                     self.turn.value = 0
-                self.VCS.notify_all()
+                if self.numP.value == 0:
+                    self.VCS.notify_all()
         self.mutex.release()
 
     def __repr__(self) -> str:
