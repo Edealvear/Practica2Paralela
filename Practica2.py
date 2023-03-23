@@ -47,7 +47,6 @@ class Monitor():
     turn == 2 /\ numCnorte == 0 /\ numCsur ==0 /\ watiP > 0 => numP > 0 
 
     """
-
         
     def wants_enter_car(self, direction: int) -> None:
         #{INV}
@@ -173,7 +172,6 @@ def car(cid: int, direction: int, monitor: Monitor)  -> None:
     print(f"car {cid} heading {direction} out of the bridge. {monitor}")
     print(f'Peatones esperando {monitor.waitP.value} Numero coches norte {monitor.waitnorte.value} Numero coches sur {monitor.waitsur.value}\nTurn {monitor.turn.value}\n')
 
-
 def pedestrian(pid: int, monitor: Monitor) -> None:
     #{INV}
     print(f"pedestrian {pid} wants to enter. {monitor}")
@@ -187,8 +185,6 @@ def pedestrian(pid: int, monitor: Monitor) -> None:
     #{INV}
     print(f"pedestrian {pid} out of the bridge. {monitor}")
     print(f'Peatones esperando {monitor.waitP.value} Numero coches norte {monitor.waitnorte.value} Numero coches sur {monitor.waitsur.value}\n Turn {monitor.turn.value}')
-
-
 
 def gen_pedestrian(monitor: Monitor) -> None:
     pid = 0
@@ -213,7 +209,6 @@ def gen_cars(monitor) -> None:
         p.start()
         plst.append(p)
         time.sleep(random.expovariate(1/TIME_CARS))
-
     for p in plst:
         p.join()
 
@@ -226,7 +221,6 @@ def main():
     gcars.join()
     gped.join()
     print("------------------------\n\nTERMINADO\n\n------------------------")
-
 
 if __name__ == '__main__':
     main()
