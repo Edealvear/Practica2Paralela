@@ -16,8 +16,6 @@ TIME_PED = 5 # a new pedestrian enters each 5s
 TIME_IN_BRIDGE_CARS = (1, 0.5) # normal 1s, 0.5s
 TIME_IN_BRIDGE_PEDESTRGIAN = (30, 10) # normal 1s, 0.5s
 
-
-
 class Monitor():
     def __init__(self):
         self.mutex = Lock()
@@ -167,7 +165,6 @@ def car(cid: int, direction: int, monitor: Monitor)  -> None:
     print(f"car {cid} heading {direction} out of the bridge. {monitor}")
     print(f'Peatones esperando {monitor.waitP.value} Numero coches norte {monitor.waitnorte.value} Numero coches sur {monitor.waitsur.value}\nTurn {monitor.turn.value}\n')
 
-
 def pedestrian(pid: int, monitor: Monitor) -> None:
     #{INV}
     print(f"pedestrian {pid} wants to enter. {monitor}")
@@ -182,8 +179,6 @@ def pedestrian(pid: int, monitor: Monitor) -> None:
     print(f"pedestrian {pid} out of the bridge. {monitor}")
     print(f'Peatones esperando {monitor.waitP.value} Numero coches norte {monitor.waitnorte.value} Numero coches sur {monitor.waitsur.value}\n Turn {monitor.turn.value}')
 
-
-
 def gen_pedestrian(monitor: Monitor) -> None:
     pid = 0
     plst = []
@@ -193,7 +188,6 @@ def gen_pedestrian(monitor: Monitor) -> None:
         p.start()
         plst.append(p)
         time.sleep(random.expovariate(1/TIME_PED))#Variable aleatoria exponencial negativa
-
     for p in plst:
         p.join()
 
@@ -220,7 +214,6 @@ def main():
     gcars.join()
     gped.join()
     print("TERMINADO")
-
 
 if __name__ == '__main__':
     main()

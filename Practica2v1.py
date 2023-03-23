@@ -38,14 +38,7 @@ class Monitor():
     numP > 0 => numCnorte == 0 /\ numCsur == 0 
 
     """
-
-    #def condicion_norte (self)-> bool:
-    #    return self.numCsur==0 and self.numP == 0
-    #def condicion_sur(self)-> bool:
-    #    return self.numCnorte ==0 and self.numP == 0
-    #def condicion_peat(self)-> bool:
-    #    return self.numCnorte ==0 and self.numP == 0
-        
+    
     def wants_enter_car(self, direction: int) -> None:
         #{INV}
         self.mutex.acquire()
@@ -136,8 +129,6 @@ def pedestrian(pid: int, monitor: Monitor) -> None:
     #{INV}
     print(f"pedestrian {pid} out of the bridge. {monitor}")
 
-
-
 def gen_pedestrian(monitor: Monitor) -> None:
     pid = 0
     plst = []
@@ -147,7 +138,6 @@ def gen_pedestrian(monitor: Monitor) -> None:
         p.start()
         plst.append(p)
         time.sleep(random.expovariate(1/TIME_PED))#Variable aleatoria exponencial negativa
-
     for p in plst:
         p.join()
 
@@ -174,7 +164,6 @@ def main():
     gcars.join()
     gped.join()
     print("TERMINADO")
-
 
 if __name__ == '__main__':
     main()
